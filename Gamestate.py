@@ -41,8 +41,12 @@ class playertable:
     def playonpile(self, col, card):
        if col not in self.piles.keys():
            raise ValueError('bad color supplied') 
-       #if self.piles[col][-1].value
        self.piles[col].append(card) 
+    
+    def playtotable(self, card):
+       if card.color not in self.piles.keys:
+           pass
+       pass 
     
     def __str__(self):
        r = '' 

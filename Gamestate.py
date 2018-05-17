@@ -31,37 +31,39 @@ class deck:
     
     def gettop(self):
         self.cardsleft -= 1
+        if self.cardsleft < 0:
+            raise ValueError('out of cards in deck')
         return self.cards.popleft()
         
     
 class playertable:
     def __init__(self):
-       self.piles = {'r' :[] , 'w' :[] , 'b' :[] , 'g' :[] , 'y' :[] } 
+       self.piles = {'R' :[] , 'W' :[] , 'B' :[] , 'G' :[] , 'Y' :[] } 
        
     def playonpile(self, col, card):
        if col not in self.piles.keys():
-           raise ValueError('bad color supplied') 
+           raise ValueError('bad color supplied in playonpile') 
        self.piles[col].append(card) 
     
     def playtotable(self, card):
-       if card.color not in self.piles.keys:
-           pass
-       pass 
+       if card.color not in self.piles.keys():
+           raise ValueError('bad color supplied in playtotable')
+       #check card fits on pile (value is correct)
+       self.piles[card.color].append(card)
     
     def __str__(self):
        r = '' 
        depth = 0
        for k in self.piles.keys():
-           r += k.upper() + '  ' 
+           r += ' ' + k.upper() + ' ' 
            if len(self.piles[k]) > depth:
                depth = len(self.piles[k])
        r += '\n'
        
        for d in range(depth):
            for p in self.piles.keys():
-               #print(d, 'thin', self.piles[p], r) 
-               if len(self.piles[p])-1 < d:
-                   r += '  ' 
+               if len(self.piles[p])-1 < d:           
+                   r += '   ' 
                else:    
                    r += ' ' + str(self.piles[p][d]) 
            r += '\n' 

@@ -7,8 +7,9 @@ deck = Gamestate.deck()
 print(deck) 
 print(a) 
 
-for i in range(5):
-    a.playonpile('r',deck.gettop()) 
+for i in range(22):
+    #a.playonpile('R',deck.gettop()) 
+    a.playtotable(deck.gettop())
 
 print('after\n')  
  

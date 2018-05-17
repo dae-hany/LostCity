@@ -29,14 +29,39 @@ class deck:
             r += str(card) + ' ' 
         return r + '(' +str(self.cardsleft) + ')' 
     
-    def getTop(self):
+    def gettop(self):
         self.cardsleft -= 1
         return self.cards.popleft()
         
     
 class playertable:
     def __init__(self):
-       pass
+       self.piles = {'r' :[] , 'w' :[] , 'b' :[] , 'g' :[] , 'y' :[] } 
+       
+    def playonpile(self, col, card):
+       if col not in self.piles.keys():
+           raise ValueError('bad color supplied') 
+       #if self.piles[col][-1].value
+       self.piles[col].append(card) 
+    
+    def __str__(self):
+       r = '' 
+       depth = 0
+       for k in self.piles.keys():
+           r += k.upper() + '  ' 
+           if len(self.piles[k]) > depth:
+               depth = len(self.piles[k])
+       r += '\n'
+       
+       for d in range(depth):
+           for p in self.piles.keys():
+               #print(d, 'thin', self.piles[p], r) 
+               if len(self.piles[p])-1 < d:
+                   r += '  ' 
+               else:    
+                   r += ' ' + str(self.piles[p][d]) 
+           r += '\n' 
+       return r
        
 class playerhand:
     def __init__(self, name):
@@ -45,6 +70,10 @@ class playerhand:
        
     def add(self, card):
        self.cards.append(card)
+    
+    def playcard(self, card):
+       self.cards.remove(card)
+       return card
        
     def __str__(self):
        r = 'Hand of ' + self.name + ': ' 
@@ -64,6 +93,6 @@ def deal(deck, p1, p2):
     if deck.cardsleft < 16:
         raise ValueError('not enough cards to deal 8 to each player') 
     for i in range(8):
-        p1.add(deck.getTop())
-        p2.add(deck.getTop())
+        p1.add(deck.gettop())
+        p2.add(deck.gettop())
         

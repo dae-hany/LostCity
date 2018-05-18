@@ -1,19 +1,15 @@
 import Player
-import GameObjects
+from GameObjects import gamestate
 
 p1 = Player.player('Alice')
 p2 = Player.player('Berry')
 
-deck = GameObjects.deck()
-discardarea = GameObjects.discardarea()
-GameObjects.deal(deck, p1, p2) 
+game = gamestate()
 
-for i in range(5r):
-    #a.playonpile('R',deck.gettop()) 
-    p1.table.play(deck.gettop())
-    p2.table.play(deck.gettop())
-    deck.gettop()
-    #discardarea.play(deck.gettop())
+game.deal(p1, p2) 
+
+for i in range(4):
+   
 
 print('\n---RESULT---\n')  
  

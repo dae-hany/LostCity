@@ -74,13 +74,15 @@ class discardarea:
        return r
     
 class gamestate:
-    def __init__(self):
-        pass
+   def __init__(self):
+       pass
+       self.deck = deck()
+       self.discardarea = discardarea()
        
-def deal(deck, p1, p2):
-    if deck.cardsleft < 16:
-        raise ValueError('not enough cards to deal 8 to each player') 
-    for i in range(8):
-        p1.hand.add(deck.gettop())
-        p2.hand.add(deck.gettop())
+   def deal(self, p1, p2):
+       if self.deck.cardsleft < 16:
+           raise ValueError('not enough cards to deal 8 to each player') 
+       for i in range(8):
+           p1.hand.add(deck.gettop())
+           p2.hand.add(deck.gettop())
         

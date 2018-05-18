@@ -8,15 +8,18 @@ deck = GameObjects.deck()
 discardarea = GameObjects.discardarea()
 GameObjects.deal(deck, p1, p2) 
 
-for i in range(2):
+for i in range(5r):
     #a.playonpile('R',deck.gettop()) 
     p1.table.play(deck.gettop())
     p2.table.play(deck.gettop())
-   # discardarea.play(deck.gettop())
+    deck.gettop()
+    #discardarea.play(deck.gettop())
 
-print('\ndone\n')  
+print('\n---RESULT---\n')  
  
-print(deck) 
+print(discardarea)
+print('\n')
+ 
 print(p1.table)
 print('Score: '+ str(p1.table.getScore())+ '\n')
 

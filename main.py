@@ -1,32 +1,27 @@
-import player
-import Gamestate
+import Player
+import GameObjects
 
+p1 = Player.player('Alice')
+p2 = Player.player('Berry')
 
-a = Gamestate.playertable() 
-deck = Gamestate.deck()
-print(deck) 
-print(a) 
+deck = GameObjects.deck()
+discardarea = GameObjects.discardarea()
+GameObjects.deal(deck, p1, p2) 
 
-for i in range(22):
+for i in range(2):
     #a.playonpile('R',deck.gettop()) 
-    a.playtotable(deck.gettop())
+    p1.table.play(deck.gettop())
+    p2.table.play(deck.gettop())
+    discardarea.play(deck.gettop())
 
-print('after\n')  
+print('\ndone\n')  
  
 print(deck) 
-print(a)
+print(p1.table)
+print('Score: '+ str(p1.table.getScore())+ '\n')
+
+
+print(p2.table)
+print('Score: '+ str(p2.table.getScore())+ '\n')
+
 exit(0)
-
-print('dealing')
-
-p1 = Gamestate.playerhand('a')
-p2 = Gamestate.playerhand('b')
-
-Gamestate.deal(deck, p1, p2) 
-
-print(p1) 
-print(p2) 
-
-print('remaining deck:') 
-print(g) 
-

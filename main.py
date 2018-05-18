@@ -12,7 +12,7 @@ for i in range(2):
     #a.playonpile('R',deck.gettop()) 
     p1.table.play(deck.gettop())
     p2.table.play(deck.gettop())
-    discardarea.play(deck.gettop())
+   # discardarea.play(deck.gettop())
 
 print('\ndone\n')  
  

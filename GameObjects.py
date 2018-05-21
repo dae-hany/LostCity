@@ -83,6 +83,6 @@ class gamestate:
        if self.deck.cardsleft < 16:
            raise ValueError('not enough cards to deal 8 to each player') 
        for i in range(8):
-           p1.hand.add(deck.gettop())
-           p2.hand.add(deck.gettop())
+           p1.hand.add(self.deck.gettop())
+           p2.hand.add(self.deck.gettop())
         

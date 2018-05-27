@@ -1,8 +1,9 @@
 import GameObjects
 
 class playertable:
-    def __init__(self):
+    def __init__(self, name):
        self.piles = {'R' :[] , 'W' :[] , 'B' :[] , 'G' :[] , 'Y' :[] } 
+       self.name = name
     
     def play(self, card):
        if card.color not in self.piles.keys():
@@ -11,10 +12,11 @@ class playertable:
        
        self.piles[card.color].append(card)
     
-    
+    def getScore(self):
+       pass
     
     def __str__(self):
-       r = '' 
+       r = 'Name:' + self.name
        depth = 0
        for k in self.piles.keys():
            r += ' ' + k.upper() + ' ' 
@@ -51,7 +53,7 @@ class playerhand:
        
 class player:
     def __init__(self, name):
-       self.hand = playerhand()
-       self.table = playertable()
+       self.hand = playerhand(name )
+       self.table = playertable(name)
        self.name = name
        

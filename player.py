@@ -8,15 +8,34 @@ class playertable:
     def play(self, card):
        if card.color not in self.piles.keys():
            raise ValueError('bad color supplied in playtotable')
-       
-       
-       self.piles[card.color].append(card)
+       if len(self.piles[card.color]) == 0:       
+           self.piles[card.color].append(card)
+       else:
+           if self.piles[card.color][-1].ordinalval > card.ordinalval:
+               raise ValueError('Illegal move('+self.name+')')
+           else:
+               self.piles[card.color].append(card)
     
     def getScore(self):
-       pass
+       table_score = 0
+       for p in self.piles.keys():
+          pile_score=-20
+          pile_mulitplier = 1
+          if len(self.piles[p]) == 0:
+              pile_score = 0
+          for c in self.piles[p]:
+              if c.value == 'H':
+                  pile_mulitplier += 1
+              elif c.value == 'X':
+                  pile_score += 10
+              else:
+                  pile_score += c.ordinalval
+          pile_score *= pile_mulitplier
+          table_score += pile_score
+       return table_score
     
     def __str__(self):
-       r = 'Name:' + self.name
+       r = 'Table of ' + self.name + ':\n'
        depth = 0
        for k in self.piles.keys():
            r += ' ' + k.upper() + ' ' 

@@ -5,6 +5,15 @@ class playertable:
        self.piles = {'R' :[] , 'W' :[] , 'B' :[] , 'G' :[] , 'Y' :[] } 
        self.name = name
     
+    def legalToPlaceOnTable(self, card):
+       if len(self.piles[card.color]) == 0:       
+           return True
+       else:
+           if self.piles[card.color][-1].ordinalval > card.ordinalval:
+               return False
+           else:
+               return True
+    
     def play(self, card):
        if card.color not in self.piles.keys():
            raise ValueError('bad color supplied in playtotable')

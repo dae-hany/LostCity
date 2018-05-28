@@ -14,7 +14,14 @@ class AIPlayer:
      
 class LowestCard(AIPlayer):
    def taketurn(self, state):
-      print(self.getinfo(state)) 
+      s = self.getinfo(state)
+      lowest = None
+      lowestvalue = 10
+      for c in s['hand'].cards:
+         if c.ordinalval < lowestvalue:
+             lowestvalue = c.ordinalval
+             lowest = c
+      return c
     
     
     

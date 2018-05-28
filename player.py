@@ -72,7 +72,7 @@ class playerhand:
        
 class player:
     def __init__(self, name):
-       self.hand = playerhand(name )
+       self.hand = playerhand(name)
        self.table = playertable(name)
        self.name = name
        

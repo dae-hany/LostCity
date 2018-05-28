@@ -75,7 +75,6 @@ class discardarea:
     
 class gamestate:
    def __init__(self):
-       pass
        self.deck = deck()
        self.discardarea = discardarea()
        

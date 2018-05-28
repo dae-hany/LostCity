@@ -2,36 +2,24 @@ import Player
 import AIEngine
 from GameObjects import gamestate
 
-p1 = Player.player('Alice')
-p2 = Player.player('Berry')
-
-ai1 = AIEngine.LowestCard(p1)
-ai2 = AIEngine.LowestCard(p2)
-
 game = gamestate()
 
-game.deal(p1, p2) 
+game.addplayer('Alice', AIEngine.LowestCard())
+game.addplayer('Berry', AIEngine.LowestCard())
 
+game.deal() 
 
-for i in range(2):
-   print(p1.hand)
-   ai1.taketurn(game)
-   print(p1.hand)
-   
-   print(p2.hand)
-   ai2.taketurn(game)
-   print(p2.hand)
+for i in range(22*2):
+    game.nextMove()
 
+print(game.narrative)
 print('\n---RESULT---\n')  
  
 print(game.discardarea)
 print('\n')
  
-print(p1.table)
-print('Score: '+ str(p1.table.getScore())+ '\n')
-
-
-print(p2.table)
-print('Score: '+ str(p2.table.getScore())+ '\n')
+for p in game.players: 
+    print(p.table)
+    print('Score: '+ str(p.table.getScore())+ '\n')
 
 exit(0)

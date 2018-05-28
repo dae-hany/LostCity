@@ -1,6 +1,8 @@
 import random
 from collections import deque
 
+import Player
+
 class card:
     def __init__(self, col, score_val, ord_val):
         self.color = col
@@ -77,11 +79,38 @@ class gamestate:
    def __init__(self):
        self.deck = deck()
        self.discardarea = discardarea()
+       self.players = []
+       self.engines = []
+       self.nextturnpointer = 0
+       self.turncounter = 0
+       self.narrative = 'Game initialized...\n'
        
-   def deal(self, p1, p2):
-       if self.deck.cardsleft < 16:
-           raise ValueError('not enough cards to deal 8 to each player') 
+   def addplayer(self, name, AIEngine):
+       self.narrative += 'Adding player ' + name + '...\n'
+       self.players.append(Player.player(name))
+       self.engines.append(AIEngine)       
+       
+   def deal(self):
+       self.narrative += 'Dealing...\n'
+       if len(self.players) != 2:
+           raise ValueError('Unusual number of players, expected exactly two.')
+       if self.deck.cardsleft < (len(self.players) * 8):
+           raise ValueError('not enough cards to deal 8 to each player.') 
        for i in range(8):
-           p1.hand.add(self.deck.gettop())
-           p2.hand.add(self.deck.gettop())
-        
+           for p in self.players:
+               p.hand.add(self.deck.gettop())
+
+   def nextMove(self):
+       if self.deck.cardsleft == 0:
+           raise ValueError('game is over. last card has already been drawn.')
+       
+       #trigger the engine to make a move.
+       self.narrative += str(self.players[self.nextturnpointer]) + ':'
+       result = self.engines[self.nextturnpointer].taketurn(self)
+       self.narrative += result + '..\n'
+       
+       #update game 
+       self.nextturnpointer += 1
+       self.nextturnpointer = self.nextturnpointer % len(self.players)
+       self.turncounter += 1
+       

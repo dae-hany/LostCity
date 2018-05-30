@@ -9,10 +9,13 @@ game.addplayer('Berry', AIEngine.LowestCard())
 
 game.deal() 
 
-for i in range(22*2):
+while not game.isdone():
     game.nextMove()
 
+
 print(game.narrative)
+
+print('turns', game.turncounter) 
 print('\n---RESULT---\n')  
  
 print(game.discardarea)

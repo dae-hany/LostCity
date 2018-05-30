@@ -114,3 +114,10 @@ class gamestate:
        self.nextturnpointer = self.nextturnpointer % len(self.players)
        self.turncounter += 1
        
+   def isdone(self):
+       return self.deck.cardsleft <= 0
+       
+       
+       
+       
+       

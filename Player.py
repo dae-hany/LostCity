@@ -84,4 +84,7 @@ class player:
        self.hand = playerhand(name)
        self.table = playertable(name)
        self.name = name
+    
+    def __str__(self):
+       return self.name
        

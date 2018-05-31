@@ -5,9 +5,10 @@ from GameObjects import gamestate
 game = gamestate()
 
 game.addplayer('Alice', AIEngine.LowestCard())
-game.addplayer('Berry', AIEngine.LowestCard())
+game.addplayer('Berry', AIEngine.BiggestSetLowCard())
 
 game.deal() 
+game.flags_printplayerhands = True
 
 while not game.isdone():
     game.nextMove()

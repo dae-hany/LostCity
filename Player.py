@@ -72,7 +72,7 @@ class playerhand:
     def playcard(self, card):
        self.cards.remove(card)
        return card
-       
+    
     def __str__(self):
        r = 'Hand of ' + self.name + ': ' 
        for card in self.cards:

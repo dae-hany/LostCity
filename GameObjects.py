@@ -84,6 +84,7 @@ class gamestate:
        self.nextturnpointer = 0
        self.turncounter = 0
        self.narrative = 'Game initialized...\n'
+       self.flags_printplayerhands = True
        
    def addplayer(self, name, AIEngine):
        self.narrative += 'Adding player ' + name + '...\n'
@@ -103,6 +104,9 @@ class gamestate:
    def nextMove(self):
        if self.deck.cardsleft == 0:
            raise ValueError('game is over. last card has already been drawn.')
+       
+       if self.flags_printplayerhands:
+           self.narrative += str(self.players[self.nextturnpointer].hand)
        
        #trigger the engine to make a move.
        self.narrative += str(self.players[self.nextturnpointer]) + ':'

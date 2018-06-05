@@ -2,6 +2,7 @@ import Player
 import GameObjects
 import random
 
+#class contains utilities methods. 
 class AIPlayer:
    def __init__(self):
 	   pass 	
@@ -15,7 +16,7 @@ class AIPlayer:
               'discardarea' : game.discardarea, 
               'cardsleft' : game.deck.cardsleft,
               'turncounter' : game.turncounter} 
-              
+                 
    def playToTable(self, game, card):
       game.players[game.nextturnpointer].table.play(game.players[game.nextturnpointer].hand.playcard(card))
       return 'Played card(' + str(card) + ') to table'
@@ -35,13 +36,24 @@ class AIPlayer:
       return ', and picked up card('+ str(pickedcard) + ') from the discard area.' 
    
 class Calculating(AIPlayer):
+   def cardContributionToPile(self, game, card):
+      pass 
+
    def taketurn(self, game):
       i = self.getallowedinfo(game)
       story = ''
       #assuming there are 16 valid moves(for each card to table or discard )
       #we need to calculate a expected score for each move, and play the best one.
+      eVtable = [0] * 8
+      eVdiscard = [0] * 8
       
       #calculate card to table scores
+      #Expected value is made of
+      #cards already in pile with new one
+      #cards currently in hand(given enough turns to play)(playability adjusted) 
+      #cards future to be picked up from deck (probability adjusted)(playability adjusted) 
+      #
+      
       for c in i['hand'].cards:
          if c.scoreval == 'H': #its a multiplier
             pass

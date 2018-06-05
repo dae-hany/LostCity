@@ -1,0 +1,33 @@
+import GameObjects
+
+
+# Returns a set of cards that have the color
+def selectCardsOfColor(cardset, color):
+    cards = [] 
+    for c in cardset:
+       if c.color == color:
+          cards.append(c)
+    return cards
+
+# Returns the score of a set of cards. 
+def scoreSetCards(cardset):
+    if len(cardset) == 0:
+       return 0
+    score = -20
+    multi = 1
+    bonus = 0
+       
+    for c in cardset:
+       if c.color <> cardset[0].color:
+           raise ValueError('scoring more than one color') 
+       if c.value == 'H':
+           multi += 1
+       elif c.value == 'X':
+           score += 10
+       else:
+           score += c.ordinalval
+    
+    if len(cardset) >= 8:
+       bonus = 20
+    
+    return (score * multi) + bonus

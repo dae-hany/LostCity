@@ -1,4 +1,5 @@
 import GameObjects
+import CalcUtils
 
 class playertable:
     def __init__(self, name):
@@ -28,17 +29,8 @@ class playertable:
     def getPileScore(self, color):
        if len(self.piles[color]) == 0:
           return 0
-       pile_score=-20
-       pile_mulitplier = 1
-       
-       for c in self.piles[color]:
-          if c.value == 'H':
-              pile_mulitplier += 1
-          elif c.value == 'X':
-              pile_score += 10
-          else:
-              pile_score += c.ordinalval
-       return pile_score * pile_mulitplier
+       else:
+          return CalcUtils.scoreSetCards(self.piles[color]) 
        
     def getScore(self):
        table_score = 0
@@ -90,4 +82,5 @@ class player:
     
     def __str__(self):
        return self.name
-       
+    
+

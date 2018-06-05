@@ -2,7 +2,9 @@ import Player
 import AIEngine
 from GameObjects import gamestate
 
-singleMode = True
+import CalcUtils as Ut
+
+singleMode = False
 
 gamesetup = {('Alice', AIEngine.LowestCard()),
             ('Berry', AIEngine.RandomCard())}
@@ -10,6 +12,10 @@ gamesetup = {('Alice', AIEngine.LowestCard()),
 #Simulate a single game, or a game with 1000 rounds.
 if singleMode:
    game = gamestate()
+   
+   #check util functions
+   print(Ut.scoreSetCards(Ut.selectCardsOfColor(game.deck.cards, 'R')) )
+   #exit(0)
 
    for name, AI in gamesetup:
       game.addplayer(name, AI)
@@ -36,7 +42,7 @@ if singleMode:
 else:
    scores = [0,0]
    
-   gamestoplay = 5000
+   gamestoplay = 4000
    for i in range(gamestoplay):
       game = gamestate()
    

@@ -25,23 +25,27 @@ class playertable:
            else:
                self.piles[card.color].append(card)
     
+    def getPileScore(self, color):
+       #if there is nothing in this piles then its worth zero.
+       if len(self.piles[color]) == 0:
+          return 0
+       #there is something in the pile its started from -20
+       pile_score = -20
+       pile_mulitplier = 1
+       for c in self.piles[color]:
+          if c.value == 'H':
+             pile_mulitplier += 1
+          elif c.value == 'X':
+             pile_score += 10
+          else:
+             pile_score += c.ordinalval
+       return pile_score * pile_mulitplier
+    
     def getScore(self):
        table_score = 0
        for p in self.piles.keys():
-          pile_score=-20
-          pile_mulitplier = 1
-          if len(self.piles[p]) == 0:
-              pile_score = 0
-          for c in self.piles[p]:
-              if c.value == 'H':
-                  pile_mulitplier += 1
-              elif c.value == 'X':
-                  pile_score += 10
-              else:
-                  pile_score += c.ordinalval
-          pile_score *= pile_mulitplier
-          table_score += pile_score
-       return table_score
+          table_score += self.getPileScore(p)
+       return table_score          
     
     def __str__(self):
        r = 'Table of ' + self.name + ':\n'

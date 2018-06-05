@@ -1,5 +1,7 @@
 import Player
 import GameObjects
+import random
+
 
 class AIPlayer:
    def __init__(self):
@@ -14,7 +16,46 @@ class AIPlayer:
               'discardarea' : game.discardarea, 
               'cardsleft' : game.deck.cardsleft,
               'turncounter' : game.turncounter} 
-              
+
+class Calculating(AIPlayer):
+   def taketurn(self, game):
+      i = self.getallowedinfo(game)
+      story = ''
+      #assuming there are 16 valid moves(for each card to table or discard )
+      #we need to calculate a expected score for each move, and play the best one.
+      
+      #calculate card to table scores
+      for c in i['hand'].cards:
+         if c.scoreval == 'H': #its a multiplier
+            pass
+            #cardvalue = expected value * (Which multiplier is this?)
+         else: 
+            cardvalue = c.ordinalval
+         
+         c.playscore = 1
+      
+      #calculate card to discard scores
+      
+      #play best card to best location
+      return 'Calculated.'
+      
+class RandomCard(AIPlayer):
+   def taketurn(self, game):
+      story = 'RandomCard:'
+      i = self.getallowedinfo(game)
+      cardtoplay = random.choice(i['hand'].cards)
+      if( not i['table'].legalToPlaceOnTable(cardtoplay) ):
+         i['discardarea'].play(i['hand'].playcard(cardtoplay))
+         story +=  'Played card(' + str(cardtoplay) + ') to discard area'
+      else:  
+         i['table'].play(i['hand'].playcard(cardtoplay))
+         story += 'Played card(' + str(cardtoplay) + ') to table'
+      #refresh hand with new card.
+      newcard = game.deck.gettop()
+      i['hand'].add(newcard)
+      story += ' then, picked up card(' + str(newcard) + ').'
+      return story
+      
 class BiggestSetLowCard(AIPlayer):
    def taketurn(self, game):
       info = self.getallowedinfo(game)

@@ -40,24 +40,11 @@ class playertable:
               pile_score += c.ordinalval
        return pile_score *= pile_mulitplier
        
-    
     def getScore(self):
        table_score = 0
        for p in self.piles.keys():
-          pile_score=-20
-          pile_mulitplier = 1
-          if len(self.piles[p]) == 0:
-              pile_score = 0
-          for c in self.piles[p]:
-              if c.value == 'H':
-                  pile_mulitplier += 1
-              elif c.value == 'X':
-                  pile_score += 10
-              else:
-                  pile_score += c.ordinalval
-          pile_score *= pile_mulitplier
-          table_score += pile_score
-       return table_score
+          table_score += self.getPileScore(p)
+       return table_score          
     
     def __str__(self):
        r = 'Table of ' + self.name + ':\n'

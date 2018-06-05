@@ -21,9 +21,25 @@ class playertable:
            self.piles[card.color].append(card)
        else:
            if self.piles[card.color][-1].ordinalval > card.ordinalval:
-               raise ValueError('Illegal move('+self.name+')')
+               raise ValueError('Illegal move('+self.name+') Card below has a greater value.')
            else:
                self.piles[card.color].append(card)
+    
+    def getPileScore(self, color):
+       if len(self.piles[color]) == 0:
+          return 0
+       pile_score=-20
+       pile_mulitplier = 1
+       
+       for c in self.piles[color]:
+          if c.value == 'H':
+              pile_mulitplier += 1
+          elif c.value == 'X':
+              pile_score += 10
+          else:
+              pile_score += c.ordinalval
+       return pile_score *= pile_mulitplier
+       
     
     def getScore(self):
        table_score = 0

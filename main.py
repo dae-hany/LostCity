@@ -2,7 +2,7 @@ import Player
 import AIEngine
 from GameObjects import gamestate
 
-singleMode = False
+singleMode = True
 
 gamesetup = {('Alice', AIEngine.LowestCard()),
             ('Berry', AIEngine.RandomCard())}

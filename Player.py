@@ -38,7 +38,7 @@ class playertable:
               pile_score += 10
           else:
               pile_score += c.ordinalval
-       return pile_score *= pile_mulitplier
+       return pile_score * pile_mulitplier
        
     def getScore(self):
        table_score = 0

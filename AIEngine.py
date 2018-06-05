@@ -2,7 +2,6 @@ import Player
 import GameObjects
 import random
 
-
 class AIPlayer:
    def __init__(self):
 	   pass 	
@@ -16,7 +15,25 @@ class AIPlayer:
               'discardarea' : game.discardarea, 
               'cardsleft' : game.deck.cardsleft,
               'turncounter' : game.turncounter} 
-
+              
+   def playToTable(self, game, card):
+      game.players[game.nextturnpointer].table.play(game.players[game.nextturnpointer].hand.playcard(card))
+      return 'Played card(' + str(card) + ') to table'
+   
+   def playToDiscard(self, game, card):
+      game.discardarea.play(game.players[game.nextturnpointer].hand.playcard(card))
+      return 'Discarded card(' + str(card) + ')'
+      
+   def pickupFromDeck(self, game):
+      newcard = game.deck.gettop()
+      game.players[game.nextturnpointer].hand.add(newcard)
+      return ', and picked up card(' + str(newcard) + ') from the deck.'
+      
+   def pickupFromDiscard(self, game, color):
+      pickedcard = game.discardarea.take(color)
+      game.players[game.nextturnpointer].hand.add(pickedcard)
+      return ', and picked up card('+ str(pickedcard) + ') from the discard area.' 
+   
 class Calculating(AIPlayer):
    def taketurn(self, game):
       i = self.getallowedinfo(game)
@@ -51,9 +68,7 @@ class RandomCard(AIPlayer):
          i['table'].play(i['hand'].playcard(cardtoplay))
          story += 'Played card(' + str(cardtoplay) + ') to table'
       #refresh hand with new card.
-      newcard = game.deck.gettop()
-      i['hand'].add(newcard)
-      story += ' then, picked up card(' + str(newcard) + ').'
+      story += self.pickupFromDeck(game)
       return story
       
 class BiggestSetLowCard(AIPlayer):
@@ -81,18 +96,14 @@ class BiggestSetLowCard(AIPlayer):
             lowestvalue = c.ordinalval
             lowest = c
       
-      story += 'Playing ' + str(lowest) + 'as its lowest ' + colorwithmost + ' card that I have, '
+      story += 'Playing ' + str(lowest) + 'as its lowest ' + colorwithmost + ' card that I have. '
 
       if( not info['table'].legalToPlaceOnTable(lowest) ):
-         info['discardarea'].play(info['hand'].playcard(lowest))
-         story +=  'it went to discard area'
+         story += self.playToDiscard(game, lowest)
       else:  
-         info['table'].play(info['hand'].playcard(lowest))
-         story += 'it went to table'
+         story += self.playToTable(game, lowest)
       #refresh hand with new card.
-      newcard = game.deck.gettop()
-      info['hand'].add(newcard)
-      story += ' then, picked up card(' + str(newcard) + ').'
+      story += self.pickupFromDeck(game)
       return story
       
 class LowestCard(AIPlayer):
@@ -110,15 +121,11 @@ class LowestCard(AIPlayer):
       #Once loop completes we will know which is the lowest card, now play it.
       #if it fits on our table, then there, else to the discardarea. 
       if( not info['table'].legalToPlaceOnTable(lowest) ):
-         info['discardarea'].play(info['hand'].playcard(lowest))
-         story +=  'Played card(' + str(lowest) + ') to discard area'
+         story += self.playToDiscard(game, lowest)
       else:  
-         info['table'].play(info['hand'].playcard(lowest))
-         story += 'Played card(' + str(lowest) + ') to table'
+         story += self.playToTable(game, lowest)
       #refresh hand with new card.
-      newcard = game.deck.gettop()
-      info['hand'].add(newcard)
-      story += ' then, picked up card(' + str(newcard) + ').'
+      story += self.pickupFromDeck(game)
       return story
       
       

@@ -102,6 +102,7 @@ class gamestate:
                p.hand.add(self.deck.gettop())
 
    def nextMove(self):
+       self.narrative += 'Turn ' + '{:0>2}'.format(self.turncounter) + ': '
        if self.deck.cardsleft == 0:
            raise ValueError('game is over. last card has already been drawn.')
        

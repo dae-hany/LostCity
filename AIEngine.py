@@ -62,11 +62,9 @@ class RandomCard(AIPlayer):
       i = self.getallowedinfo(game)
       cardtoplay = random.choice(i['hand'].cards)
       if( not i['table'].legalToPlaceOnTable(cardtoplay) ):
-         i['discardarea'].play(i['hand'].playcard(cardtoplay))
-         story +=  'Played card(' + str(cardtoplay) + ') to discard area'
+         story += self.playToDiscard(game, cardtoplay)
       else:  
-         i['table'].play(i['hand'].playcard(cardtoplay))
-         story += 'Played card(' + str(cardtoplay) + ') to table'
+         story += self.playToTable(game, cardtoplay)
       #refresh hand with new card.
       story += self.pickupFromDeck(game)
       return story
@@ -117,7 +115,7 @@ class LowestCard(AIPlayer):
          if c.ordinalval < lowestvalue:
             lowestvalue = c.ordinalval
             lowest = c
-             
+            
       #Once loop completes we will know which is the lowest card, now play it.
       #if it fits on our table, then there, else to the discardarea. 
       if( not info['table'].legalToPlaceOnTable(lowest) ):

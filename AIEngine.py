@@ -1,5 +1,6 @@
 import Player
 import GameObjects
+import CalcUtils as Ut
 import random
 
 #class contains utilities methods. 
@@ -52,18 +53,17 @@ class Calculating(AIPlayer):
       #cards already in pile with new one
       #cards currently in hand(given enough turns to play)(playability adjusted) 
       #cards future to be picked up from deck (probability adjusted)(playability adjusted) 
-      #
       
-      for c in i['hand'].cards:
-         if c.scoreval == 'H': #its a multiplier
-            pass
-            #cardvalue = expected value * (Which multiplier is this?)
-         else: 
-            cardvalue = c.ordinalval
-         
-         c.playscore = 1
-      
-      #calculate card to discard scores
+      for index, card in enumerate(i['hand'].cards):
+         #calculate card to table scores 
+         card_eV = Ut.scoreSetCards(i['table'].piles[card.color] + card)
+         print(card_eV)
+         hand_eV = 1
+         deck_eV = 1
+         eVtable[index] = card_eV + hand_eV + deck_eV   
+       
+         #calculate card to discard scores
+         eVdiscard[index] = 1
       
       #play best card to best location
       return 'Calculated.'

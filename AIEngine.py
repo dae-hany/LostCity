@@ -3,6 +3,8 @@ import GameObjects
 import CalcUtils as Ut
 import random
 
+negativeInfinity = -9999
+
 #class contains utilities methods. 
 class AIPlayer:
    def __init__(self):
@@ -43,6 +45,7 @@ class CalculatingAI(AIPlayer):
    def taketurn(self, game):
       i = self.getallowedinfo(game)
       story = ''
+
       #assuming there are 16 valid moves(for each card to table or discard )
       #we need to calculate a expected score for each move, and play the best one.
       eVtable = [0] * 8
@@ -50,17 +53,25 @@ class CalculatingAI(AIPlayer):
       
       #calculate card to table scores
       #Expected value is made of
-      #cards already in pile with new one
+      #diffence that current card will make to immediate pile score. 
       #cards currently in hand(given enough turns to play)(playability adjusted) 
       #cards future to be picked up from deck (probability adjusted)(playability adjusted) 
       
       for index, card in enumerate(i['hand'].cards):
+        
          #calculate card to table scores 
-         card_eV = Ut.scoreSet(i['table'].piles[card.color] + [card])
+         card_eV = Ut.scoreSet(i['table'].piles[card.color] + [card]) - Ut.scoreSet(i['table'].piles[card.color]) 
          
-         hand_eV = Ut.scoreSet(Ut.selectAbove(Ut.selectColor(i['hand'].cards, card), card) + i['table'].piles[card.color])
+         #hand_eV
+         inhandset = Ut.selectAbove(Ut.selectColor(i['hand'].cards, card), card)
+         hand_eV = Ut.scoreSet(inhandset + i['table'].piles[card.color] + [card])-Ut.scoreSet(i['table'].piles[card.color] + [card])
+         
          deck_eV = 0
+         
          eVtable[index] = card_eV + hand_eV + deck_eV
+         if not i['table'].legalToPlaceOnTable(card):
+            eVtable[index] = negativeInfinity
+            #continue
          print("[{}] card:{} hand:{} deck:{} = total:{}".format(card, card_eV, hand_eV, deck_eV, eVtable[index]))
             
        
@@ -70,10 +81,7 @@ class CalculatingAI(AIPlayer):
          
       
       #play best card to best location
-      print(i['hand'])
-    
-      print(eVtable)
-      
+      RandomCard().taketurn(game)
       return 'Calculated.'
       
 class RandomCard(AIPlayer):

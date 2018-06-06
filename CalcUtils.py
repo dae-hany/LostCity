@@ -13,7 +13,7 @@ def selectColor(cardset, card):
 def selectAbove(cardset, card):
     cards = []
     for c in cardset:
-       if c.ordinalval >= card.ordinalval:
+       if c.ordinalval > card.ordinalval:
           cards.append(c)
     return cards          
 

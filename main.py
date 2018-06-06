@@ -14,11 +14,11 @@ if singleMode:
    game = gamestate()
    
    #check util functions
-   card = game.deck.cards.pop()
-   print(card)
-   print(map(str, Ut.selectColor(game.deck.cards, card)))
-   print(map(str, Ut.selectAbove(Ut.selectColor(game.deck.cards, card), card)))
-   exit(0)
+#   card = game.deck.cards.pop()
+#   print(card)
+#   print(map(str, Ut.selectColor(game.deck.cards, card)))
+#   print(map(str, Ut.selectAbove(Ut.selectColor(game.deck.cards, card), card)))
+#   exit(0)
 
    for name, AI in gamesetup:
       game.addplayer(name, AI)
@@ -28,9 +28,9 @@ if singleMode:
    
    while not game.isdone():
        game.nextMove()
+       print(game.players[0].table)
    
-   
-   print(game.narrative)
+   #print(game.narrative)
    
    print('turns', game.turncounter) 
    print('\n---RESULT---\n')  

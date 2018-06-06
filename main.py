@@ -4,9 +4,9 @@ from GameObjects import gamestate
 
 import CalcUtils as Ut
 
-singleMode = False
+singleMode = True
 
-gamesetup = {('Alice', AIEngine.LowestCard()),
+gamesetup = {('Alice', AIEngine.CalculatingAI()),
             ('Berry', AIEngine.RandomCard())}
 
 #Simulate a single game, or a game with 1000 rounds.
@@ -14,8 +14,11 @@ if singleMode:
    game = gamestate()
    
    #check util functions
-   print(Ut.scoreSetCards(Ut.selectCardsOfColor(game.deck.cards, 'R')) )
-   #exit(0)
+   card = game.deck.cards.pop()
+   print(card)
+   print(map(str, Ut.selectColor(game.deck.cards, card)))
+   print(map(str, Ut.selectAbove(Ut.selectColor(game.deck.cards, card), card)))
+   exit(0)
 
    for name, AI in gamesetup:
       game.addplayer(name, AI)

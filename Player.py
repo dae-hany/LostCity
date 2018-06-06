@@ -30,7 +30,7 @@ class playertable:
        if len(self.piles[color]) == 0:
           return 0
        else:
-          return CalcUtils.scoreSetCards(self.piles[color]) 
+          return CalcUtils.scoreSet(self.piles[color]) 
        
     def getScore(self):
        table_score = 0
@@ -69,7 +69,7 @@ class playerhand:
        return card
     
     def __str__(self):
-       r = 'Hand of ' + self.name + ': ' 
+       r = '' 
        for card in self.cards:
            r += str(card) + ' ' 
        return r

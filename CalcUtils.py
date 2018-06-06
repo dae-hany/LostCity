@@ -2,15 +2,23 @@ import GameObjects
 
 
 # Returns a set of cards that have the color
-def selectCardsOfColor(cardset, color):
+def selectColor(cardset, card):
     cards = [] 
     for c in cardset:
-       if c.color == color:
+       if c.color == card.color:
           cards.append(c)
     return cards
 
+# Returns a set of cards(from another set) that would be legal to play on top of the given card
+def selectAbove(cardset, card):
+    cards = []
+    for c in cardset:
+       if c.ordinalval >= card.ordinalval:
+          cards.append(c)
+    return cards          
+
 # Returns the score of a set of cards. 
-def scoreSetCards(cardset):
+def scoreSet(cardset):
     if len(cardset) == 0:
        return 0
     score = -20

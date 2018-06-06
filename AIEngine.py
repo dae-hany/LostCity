@@ -36,7 +36,7 @@ class AIPlayer:
       game.players[game.nextturnpointer].hand.add(pickedcard)
       return ', and picked up card('+ str(pickedcard) + ') from the discard area.' 
    
-class Calculating(AIPlayer):
+class CalculatingAI(AIPlayer):
    def cardContributionToPile(self, game, card):
       pass 
 
@@ -56,16 +56,24 @@ class Calculating(AIPlayer):
       
       for index, card in enumerate(i['hand'].cards):
          #calculate card to table scores 
-         card_eV = Ut.scoreSetCards(i['table'].piles[card.color] + card)
-         print(card_eV)
-         hand_eV = 1
-         deck_eV = 1
-         eVtable[index] = card_eV + hand_eV + deck_eV   
+         card_eV = Ut.scoreSet(i['table'].piles[card.color] + [card])
+         
+         hand_eV = Ut.scoreSet(Ut.selectAbove(Ut.selectColor(i['hand'].cards, card), card) + i['table'].piles[card.color])
+         deck_eV = 0
+         eVtable[index] = card_eV + hand_eV + deck_eV
+         print("[{}] card:{} hand:{} deck:{} = total:{}".format(card, card_eV, hand_eV, deck_eV, eVtable[index]))
+            
        
          #calculate card to discard scores
-         eVdiscard[index] = 1
+         eVdiscard[index] = 0
+         
+         
       
       #play best card to best location
+      print(i['hand'])
+    
+      print(eVtable)
+      
       return 'Calculated.'
       
 class RandomCard(AIPlayer):

@@ -1,5 +1,9 @@
 import GameObjects
 
+# Returns the set of unseen cards from the perspective of player. 
+def setUnseenCards(game):
+    i = (game.nextturnpointer + 1) % len(game.players)
+    return game.deck.cards + game.players[i].hand.cards
 
 # Returns a set of cards that have the color
 def selectColor(cardset, card):

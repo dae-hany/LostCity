@@ -29,6 +29,9 @@ if singleMode:
    while not game.isdone():
        game.nextMove()
        print(game.players[0].table)
+       if game.turncounter == 21:
+           print('unknown cards') 
+           print(Ut.setUnseenCards(game)) 
    
    #print(game.narrative)
    

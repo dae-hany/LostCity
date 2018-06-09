@@ -3,7 +3,7 @@ import GameObjects
 import CalcUtils as Ut
 import random
 
-negativeInfinity = -9999
+negativeInfinity = -999
 
 #class contains utilities methods. 
 class AIPlayer:
@@ -48,41 +48,57 @@ class CalculatingAI(AIPlayer):
 
       #assuming there are 16 valid moves(for each card to table or discard )
       #we need to calculate a expected score for each move, and play the best one.
-      eVtable = [0] * 8
-      eVdiscard = [0] * 8
+      eVtable = [float(0)] * 8
+      eVdiscard = [float(0)] * 8
       
       #calculate card to table scores
       #Expected value is made of
       #diffence that current card will make to immediate pile score. 
       #cards currently in hand(given enough turns to play)(playability adjusted) 
       #cards future to be picked up from deck (probability adjusted)(playability adjusted) 
+      bestcard = None
+      bestscore = negativeInfinity-1
       
       for index, card in enumerate(i['hand'].cards):
+         tableset = i['table'].piles[card.color] 
         
          #calculate card to table scores 
-         card_eV = Ut.scoreSet(i['table'].piles[card.color] + [card]) - Ut.scoreSet(i['table'].piles[card.color]) 
+         card_eV = Ut.scoreSet(tableset + [card]) - Ut.scoreSet(tableset) 
          
          #hand_eV
          inhandset = Ut.selectAbove(Ut.selectColor(i['hand'].cards, card), card)
-         hand_eV = Ut.scoreSet(inhandset + i['table'].piles[card.color] + [card])-Ut.scoreSet(i['table'].piles[card.color] + [card])
+         hand_eV = float(Ut.scoreSet(inhandset + tableset + [card])-Ut.scoreSet(tableset + [card]))
          
+         #deck_eV
+         unseenSet = Ut.selectAbove(Ut.selectColor(Ut.setUnseenCards(game), card), card)
          deck_eV = 0
+         c_remain = len(unseenSet) - 8 #not counting opponents hand
+         
+         #each card is worth its value times probability of getting it played. (pickup, then having enough turns to play it) 
+         for c in unseenSet:
+             c_diff = Ut.scoreSet(inhandset + tableset +[c] ) - Ut.scoreSet(inhandset + tableset) 
+             deck_eV += float(c_diff * ((c_remain / float(len(unseenSet))) * (1/float(c_remain)))) 
+         
          
          eVtable[index] = card_eV + hand_eV + deck_eV
          if not i['table'].legalToPlaceOnTable(card):
             eVtable[index] = negativeInfinity
             #continue
-         print("[{}] card:{} hand:{} deck:{} = total:{}".format(card, card_eV, hand_eV, deck_eV, eVtable[index]))
+         print("[{}] card:{} hand:{} deck:{:.2f} = {:.2f}".format(card, card_eV, hand_eV, deck_eV, eVtable[index]))
             
        
          #calculate card to discard scores
          eVdiscard[index] = 0
          
+         #note card value if highest yet
+         if eVtable[index] > bestscore:
+             bestscore = eVtable[index]
+             bestcard = card
          
       
       #play best card to best location
-      RandomCard().taketurn(game)
-      return 'Calculated.'
+      RandomCard().taketurn(bestcard)
+      return 'Calculated. Played [' +str(bestcard) + ']' 
       
 class RandomCard(AIPlayer):
    def taketurn(self, game):

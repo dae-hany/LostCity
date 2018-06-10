@@ -70,13 +70,15 @@ class CalculatingAI(AIPlayer):
          hand_eV = float(Ut.scoreSet(inhandset + tableset + [card])-Ut.scoreSet(tableset + [card]))
          
          #deck_eV
-         unseenSet = Ut.selectAbove(Ut.selectColor(Ut.setUnseenCards(game), card), card)
+         unseenSet = Ut.setUnseenCards(game)
+         playableUnseenSet = Ut.selectAbove(Ut.selectColor(unseenSet, card), card) 
          deck_eV = 0
-         c_remain = len(unseenSet) - 8 #not counting opponents hand
+         c_remain = i['cardsleft'] 
          
          #each card is worth its value times probability of getting it played. (pickup, then having enough turns to play it) 
-         for c in unseenSet:
+         for c in playableUnseenSet:
              c_diff = Ut.scoreSet(inhandset + tableset +[c] ) - Ut.scoreSet(inhandset + tableset) 
+             #print(float(len(unseenSet)), float(c_remain)) 
              deck_eV += float(c_diff * ((c_remain / float(len(unseenSet))) * (1/float(c_remain)))) 
          
          
@@ -94,10 +96,15 @@ class CalculatingAI(AIPlayer):
          if eVtable[index] > bestscore:
              bestscore = eVtable[index]
              bestcard = card
-         
       
       #play best card to best location
-      RandomCard().taketurn(bestcard)
+      if( not i['table'].legalToPlaceOnTable(bestcard) ):
+         story += self.playToDiscard(game, bestcard) 
+      else:  
+         story += self.playToTable(game, bestcard)
+      #refresh hand with new card.
+      story += self.pickupFromDeck(game)
+      return story
       return 'Calculated. Played [' +str(bestcard) + ']' 
       
 class RandomCard(AIPlayer):

@@ -39,9 +39,12 @@ class AIPlayer:
       return ', and picked up card('+ str(pickedcard) + ') from the discard area.' 
    
 class CalculatingAI(AIPlayer):
-   def cardContributionToPile(self, game, card):
-      pass 
-
+   #Takes a card and returns its score contribution to the pile.. ie the pile with and without it. 
+   def cardContributionToSet(self, game, cardset, card):
+      pileWithout = cardset
+      pileWith = pileWithout + [card]
+      return Ut.scoreSet(pileWith) - Ut.scoreSet(pileWithout)
+      
    def taketurn(self, game):
       i = self.getallowedinfo(game)
       story = ''
@@ -63,11 +66,12 @@ class CalculatingAI(AIPlayer):
          tableset = i['table'].piles[card.color] 
         
          #calculate card to table scores 
-         card_eV = Ut.scoreSet(tableset + [card]) - Ut.scoreSet(tableset) 
+         card_eV = self.cardContributionToSet(game, tableset, card) 
          
          #hand_eV
          inhandset = Ut.selectAbove(Ut.selectColor(i['hand'].cards, card), card)
-         hand_eV = float(Ut.scoreSet(inhandset + tableset + [card])-Ut.scoreSet(tableset + [card]))
+         hand_eV = self.cardContributionToSet(game, inhandset + tableset, card)
+         #float(Ut.scoreSet(inhandset + tableset + [card])-Ut.scoreSet(tableset + [card]))
          
          #deck_eV
          unseenSet = Ut.setUnseenCards(game)
@@ -77,8 +81,10 @@ class CalculatingAI(AIPlayer):
          
          #each card is worth its value times probability of getting it played. (pickup, then having enough turns to play it) 
          for c in playableUnseenSet:
+             #Calculate the difference this particular card would make...
              c_diff = Ut.scoreSet(inhandset + tableset +[c] ) - Ut.scoreSet(inhandset + tableset) 
              #print(float(len(unseenSet)), float(c_remain)) 
+             
              deck_eV += float(c_diff * ((c_remain / float(len(unseenSet))) * (1/float(c_remain)))) 
          
          

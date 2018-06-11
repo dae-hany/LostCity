@@ -42,4 +42,4 @@ def scoreSet(cardset):
     if len(cardset) >= 8:
        bonus = 20
     
-    return (score * multi) + bonus
+    return float((score * multi) + bonus)

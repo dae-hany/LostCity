@@ -67,11 +67,13 @@ class CalculatingAI(AIPlayer):
         
          #calculate card to table scores 
          card_eV = self.cardContributionToSet(game, tableset, card) 
+         #hacks: Without this a H will rarely be led as its calculated to give -40
+         if card.value == 'H':
+            card_eV = -20
          
          #hand_eV
          inhandset = Ut.selectAbove(Ut.selectColor(i['hand'].cards, card), card)
-         hand_eV = self.cardContributionToSet(game, inhandset + tableset, card)
-         #float(Ut.scoreSet(inhandset + tableset + [card])-Ut.scoreSet(tableset + [card]))
+         hand_eV = float(Ut.scoreSet(inhandset + tableset + [card])-Ut.scoreSet(tableset + [card]))
          
          #deck_eV
          unseenSet = Ut.setUnseenCards(game)
@@ -82,10 +84,11 @@ class CalculatingAI(AIPlayer):
          #each card is worth its value times probability of getting it played. (pickup, then having enough turns to play it) 
          for c in playableUnseenSet:
              #Calculate the difference this particular card would make...
-             c_diff = Ut.scoreSet(inhandset + tableset +[c] ) - Ut.scoreSet(inhandset + tableset) 
+             c_diff = self.cardContributionToSet(game, inhandset + tableset, c)
              #print(float(len(unseenSet)), float(c_remain)) 
              
-             deck_eV += float(c_diff * ((c_remain / float(len(unseenSet))) * (1/float(c_remain)))) 
+             #deck_eV += float(c_diff * ((c_remain / float(len(unseenSet))) * (1/float(c_remain)))) 
+             deck_eV += float(c_diff * 0.5)  #This card, and assuming 50-50 chance to pick it up. 
          
          
          eVtable[index] = card_eV + hand_eV + deck_eV

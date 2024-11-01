@@ -5,11 +5,11 @@ import random
 
 negativeInfinity = -999
 
-#class contains utilities methods. 
+# 기본 AI 클래스, 모든 AI 플레이어들이 상속 받음 
 class AIPlayer:
    def __init__(self):
-	   pass 	
-   def getallowedinfo(self, game):
+      pass 	
+   def getallowedinfo(self, game): # 현재 턴의 플레이어와 상대 플레이어의 정보를 포함한 딕셔너리를 반환 
       pindex = game.nextturnpointer
       opponentplayerindex = (pindex+1)%2
       return {'pix' : game.nextturnpointer,
@@ -19,25 +19,30 @@ class AIPlayer:
               'discardarea' : game.discardarea, 
               'cardsleft' : game.deck.cardsleft,
               'turncounter' : game.turncounter} 
-                 
+
+   # 주어진 카드를 테이블에 플레이      
    def playToTable(self, game, card):
       game.players[game.nextturnpointer].table.play(game.players[game.nextturnpointer].hand.playcard(card))
       return 'Played card(' + str(card) + ') to table'
    
+   # 주어진 카드를 폐기 
    def playToDiscard(self, game, card):
       game.discardarea.play(game.players[game.nextturnpointer].hand.playcard(card))
       return 'Discarded card(' + str(card) + ')'
       
+   # 덱에서 카드를 한 장 가져옴 
    def pickupFromDeck(self, game):
       newcard = game.deck.gettop()
       game.players[game.nextturnpointer].hand.add(newcard)
       return ', and picked up card(' + str(newcard) + ') from the deck.'
-      
+   
+   # 폐기에서 카드를 한장 가져옴 
    def pickupFromDiscard(self, game, color):
       pickedcard = game.discardarea.take(color)
       game.players[game.nextturnpointer].hand.add(pickedcard)
       return ', and picked up card('+ str(pickedcard) + ') from the discard area.' 
-   
+
+# 최적의 점수를 계산하여 플레이하는 AI 
 class CalculatingAI(AIPlayer):
    #Takes a card and returns its score contribution to the pile.. ie the pile with and without it. 
    def cardContributionToSet(self, game, cardset, card):
@@ -115,7 +120,8 @@ class CalculatingAI(AIPlayer):
       story += self.pickupFromDeck(game)
       return story
       return 'Calculated. Played [' +str(bestcard) + ']' 
-      
+
+# 임의의 카드를 선택하는 무작위 AI
 class RandomCard(AIPlayer):
    def taketurn(self, game):
       story = 'RandomCard:'
@@ -128,7 +134,8 @@ class RandomCard(AIPlayer):
       #refresh hand with new card.
       story += self.pickupFromDeck(game)
       return story
-      
+
+# 가장 많은 색깔의 카드 중 가장 낮은 카드를 플레이  
 class BiggestSetLowCard(AIPlayer):
    def taketurn(self, game):
       info = self.getallowedinfo(game)
@@ -163,7 +170,8 @@ class BiggestSetLowCard(AIPlayer):
       #refresh hand with new card.
       story += self.pickupFromDeck(game)
       return story
-      
+   
+# 손에 있는 카드 중에서 가장 낮은 카드를 플레이하는 AI입니다.
 class LowestCard(AIPlayer):
    def taketurn(self, game):
       info = self.getallowedinfo(game)

@@ -1,11 +1,11 @@
 import GameObjects
 
-# Returns the set of unseen cards from the perspective of player. 
+# 플레이어가 보지 못한 카드의 집합을 반환 
 def setUnseenCards(game):
     i = (game.nextturnpointer + 1) % len(game.players)
     return list(game.deck.cards) + game.players[i].hand.cards
 
-# Returns a set of cards that have the color
+# 특정 색깔의 카드들만 선택해서 반환 
 def selectColor(cardset, card):
     cards = [] 
     for c in cardset:
@@ -13,7 +13,7 @@ def selectColor(cardset, card):
           cards.append(c)
     return cards
 
-# Returns a set of cards(from another set) that would be legal to play on top of the given card
+# 주어진 카드 위에 놓을 수 있는 카드를 선택하여 반환 
 def selectAbove(cardset, card):
     cards = []
     for c in cardset:
@@ -21,16 +21,16 @@ def selectAbove(cardset, card):
           cards.append(c)
     return cards          
 
-# Returns the score of a set of cards. 
+# 카드 집합의 점수를 계산하여 반환 
 def scoreSet(cardset):
     if len(cardset) == 0:
        return 0
-    score = -20
-    multi = 1
+    score = -20 # 기본 점수 -20 
+    multi = 1 
     bonus = 0
        
     for c in cardset:
-       if c.color <> cardset[0].color:
+       if c.color != cardset[0].color:
            raise ValueError('scoring more than one color') 
        if c.value == 'H':
            multi += 1

@@ -4,10 +4,14 @@ from GameObjects import gamestate
 
 import CalcUtils as Ut
 
+# singleMode가 True이면 한 게임만 시뮬레이션
+# singleMode가 False이면 여러 게임 반복 
 singleMode = True
 
+# 변수 및 게임 설정 
 gamesetup = {('Alice', AIEngine.CalculatingAI()),
             ('Berry', AIEngine.RandomCard())}
+
 
 #Simulate a single game, or a game with 1000 rounds.
 if singleMode:

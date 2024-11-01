@@ -1,7 +1,7 @@
 import random
 from collections import deque
 
-import Player
+import AIPlayer
 
 # 카드 클래스 
 class card:
@@ -94,7 +94,7 @@ class gamestate:
    # 플레이어를 게임에 추가 
    def addplayer(self, name, AIEngine):
        self.narrative += 'Adding player ' + name + '...\n'
-       self.players.append(Player.player(name))
+       self.players.append(AIPlayer.AIplayer(name))
        self.engines.append(AIEngine)       
     
    # 플레이어에게 카드를 배분 

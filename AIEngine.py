@@ -1,4 +1,4 @@
-import Player
+import AIPlayer
 import GameObjects
 import CalcUtils as Ut
 import random

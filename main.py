@@ -1,4 +1,4 @@
-import Player
+import AIPlayer
 import AIEngine
 from GameObjects import gamestate
 
